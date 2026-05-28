@@ -59,7 +59,7 @@ class EventStore: ObservableObject {
         if let data = UserDefaults.standard.data(forKey: saveKey),
            let decoded = try? JSONDecoder().decode([TimeEvent].self, from: data) {
             events = decoded
-            syncSharedEvents(data)
+            syncSharedEventsIfNeeded(data)
         } else if let sharedDefaults = UserDefaults(suiteName: suiteName),
                   let data = sharedDefaults.data(forKey: saveKey),
                   let decoded = try? JSONDecoder().decode([TimeEvent].self, from: data) {
@@ -82,6 +82,12 @@ class EventStore: ObservableObject {
 
     private func syncSharedEvents(_ data: Data) {
         guard let sharedDefaults = UserDefaults(suiteName: suiteName) else { return }
+        sharedDefaults.set(data, forKey: saveKey)
+    }
+
+    private func syncSharedEventsIfNeeded(_ data: Data) {
+        guard let sharedDefaults = UserDefaults(suiteName: suiteName) else { return }
+        guard sharedDefaults.data(forKey: saveKey) != data else { return }
         sharedDefaults.set(data, forKey: saveKey)
     }
 }
