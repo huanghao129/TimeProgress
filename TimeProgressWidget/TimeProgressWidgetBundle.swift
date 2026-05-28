@@ -12,7 +12,5 @@ import SwiftUI
 struct TimeProgressWidgetBundle: WidgetBundle {
     var body: some Widget {
         TimeProgressWidget()
-        TimeProgressWidgetControl()
-        TimeProgressWidgetLiveActivity()
     }
 }
