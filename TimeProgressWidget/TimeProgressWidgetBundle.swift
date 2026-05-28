@@ -8,7 +8,8 @@
 import WidgetKit
 import SwiftUI
 
-@main
+// Mark this bundle as `@main` only after the TimeProgressWidget files are
+// included in a real Widget Extension target in TimeProgress.xcodeproj.
 struct TimeProgressWidgetBundle: WidgetBundle {
     var body: some Widget {
         TimeProgressWidget()
