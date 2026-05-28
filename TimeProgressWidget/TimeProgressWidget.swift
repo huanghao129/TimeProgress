@@ -7,6 +7,7 @@
 
 import WidgetKit
 import SwiftUI
+import AppIntents
 
 // MARK: - Timeline Entry
 
@@ -17,43 +18,38 @@ struct TimeProgressEntry: TimelineEntry {
 
 // MARK: - Provider
 
-struct TimeProgressProvider: TimelineProvider {
-    private let suiteName = "group.com.huanghao.TimeProgress"
-    private let saveKey = "TimeProgressEvents"
-
+struct TimeProgressProvider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> TimeProgressEntry {
         TimeProgressEntry(date: Date(), event: .placeholder)
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (TimeProgressEntry) -> Void) {
-        let events = loadEvents()
-        let entry = TimeProgressEntry(date: Date(), event: mostRelevantEvent(from: events))
-        completion(entry)
+    func snapshot(for configuration: SelectEventIntent, in context: Context) async -> TimeProgressEntry {
+        let events = WidgetEventStore.loadEvents()
+        return TimeProgressEntry(date: Date(), event: resolvedEvent(for: configuration, from: events))
     }
 
-    func getTimeline(in context: Context, completion: @escaping (Timeline<TimeProgressEntry>) -> Void) {
-        let events = loadEvents()
-        let event = mostRelevantEvent(from: events)
+    func timeline(for configuration: SelectEventIntent, in context: Context) async -> Timeline<TimeProgressEntry> {
+        let events = WidgetEventStore.loadEvents()
+        let event = resolvedEvent(for: configuration, from: events)
         let now = Date()
 
-        // One entry per hour for the next 24 hours so the remaining-time text stays fresh.
         let entries: [TimeProgressEntry] = (0..<24).map { hour in
             let entryDate = Calendar.current.date(byAdding: .hour, value: hour, to: now)!
             return TimeProgressEntry(date: entryDate, event: event)
         }
 
-        completion(Timeline(entries: entries, policy: .atEnd))
+        return Timeline(entries: entries, policy: .atEnd)
     }
 
     // MARK: - Helpers
 
-    private func loadEvents() -> [TimeEvent] {
-        guard let defaults = UserDefaults(suiteName: suiteName),
-              let data = defaults.data(forKey: saveKey),
-              let events = try? JSONDecoder().decode([TimeEvent].self, from: data) else {
-            return []
+    private func resolvedEvent(for configuration: SelectEventIntent, from events: [TimeEvent]) -> TimeEvent? {
+        if let selectedId = configuration.event?.id,
+           let uuid = UUID(uuidString: selectedId),
+           let selectedEvent = events.first(where: { $0.id == uuid }) {
+            return selectedEvent
         }
-        return events
+        return mostRelevantEvent(from: events)
     }
 
     /// Returns the most relevant event: active > upcoming > most-recently-completed.
@@ -70,6 +66,20 @@ struct TimeProgressProvider: TimelineProvider {
             return upcoming
         }
         return events.max(by: { $0.endDate < $1.endDate })
+    }
+}
+
+enum WidgetEventStore {
+    private static let suiteName = "group.com.huanghao.TimeProgress"
+    private static let saveKey = "TimeProgressEvents"
+
+    static func loadEvents() -> [TimeEvent] {
+        guard let defaults = UserDefaults(suiteName: suiteName),
+              let data = defaults.data(forKey: saveKey),
+              let events = try? JSONDecoder().decode([TimeEvent].self, from: data) else {
+            return []
+        }
+        return events
     }
 }
 
@@ -144,7 +154,7 @@ struct TimeProgressWidget: Widget {
     let kind: String = "TimeProgressWidget"
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: TimeProgressProvider()) { entry in
+        AppIntentConfiguration(kind: kind, intent: SelectEventIntent.self, provider: TimeProgressProvider()) { entry in
             TimeProgressWidgetEntryView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
         }
