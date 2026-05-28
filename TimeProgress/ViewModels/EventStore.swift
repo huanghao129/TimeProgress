@@ -9,6 +9,9 @@ import Combine
 import Foundation
 import SwiftUI
 import Combine
+#if canImport(WidgetKit)
+import WidgetKit
+#endif
 
 class EventStore: ObservableObject {
     @Published var events: [TimeEvent] = []
@@ -49,6 +52,9 @@ class EventStore: ObservableObject {
             if let sharedDefaults = UserDefaults(suiteName: suiteName) {
                 sharedDefaults.set(data, forKey: saveKey)
             }
+#if canImport(WidgetKit)
+            WidgetCenter.shared.reloadAllTimelines()
+#endif
         }
     }
     

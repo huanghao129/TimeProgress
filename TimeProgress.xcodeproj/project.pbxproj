@@ -21,12 +21,32 @@
 			remoteGlobalIDString = 1DB29C862FC8151900A9A874;
 			remoteInfo = TimeProgress;
 		};
+		A1B2C3DC2FC9000000A9A001 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1DB29C7F2FC8151900A9A874 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A1B2C3DD2FC9000000A9A001;
+			remoteInfo = TimeProgressWidget;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXBuildFile section */
+		A1B2C3D62FC9000000A9A001 /* TimeProgressWidget.appex in Embed App Extensions */ = {
+			isa = PBXBuildFile;
+			fileRef = A1B2C3D42FC9000000A9A001 /* TimeProgressWidget.appex */;
+			settings = {
+				ATTRIBUTES = (
+					RemoveHeadersOnCopy,
+				);
+			};
+		};
+/* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1DB29C872FC8151900A9A874 /* TimeProgress.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeProgress.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DB29C942FC8151A00A9A874 /* TimeProgressTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimeProgressTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DB29C9E2FC8151A00A9A874 /* TimeProgressUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimeProgressUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1B2C3D42FC9000000A9A001 /* TimeProgressWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TimeProgressWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -45,7 +65,26 @@
 			path = TimeProgressUITests;
 			sourceTree = "<group>";
 		};
+		A1B2C3D52FC9000000A9A001 /* TimeProgressWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = TimeProgressWidget;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A1B2C3DA2FC9000000A9A001 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				A1B2C3D62FC9000000A9A001 /* TimeProgressWidget.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		1DB29C842FC8151900A9A874 /* Frameworks */ = {
@@ -69,6 +108,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A1B2C3D72FC9000000A9A001 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -78,6 +124,7 @@
 				1DB29C892FC8151900A9A874 /* TimeProgress */,
 				1DB29C972FC8151A00A9A874 /* TimeProgressTests */,
 				1DB29CA12FC8151A00A9A874 /* TimeProgressUITests */,
+				A1B2C3D52FC9000000A9A001 /* TimeProgressWidget */,
 				1DB29C882FC8151900A9A874 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -88,6 +135,7 @@
 				1DB29C872FC8151900A9A874 /* TimeProgress.app */,
 				1DB29C942FC8151A00A9A874 /* TimeProgressTests.xctest */,
 				1DB29C9E2FC8151A00A9A874 /* TimeProgressUITests.xctest */,
+				A1B2C3D42FC9000000A9A001 /* TimeProgressWidget.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -102,10 +150,12 @@
 				1DB29C832FC8151900A9A874 /* Sources */,
 				1DB29C842FC8151900A9A874 /* Frameworks */,
 				1DB29C852FC8151900A9A874 /* Resources */,
+				A1B2C3DA2FC9000000A9A001 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				A1B2C3DB2FC9000000A9A001 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				1DB29C892FC8151900A9A874 /* TimeProgress */,
@@ -163,6 +213,28 @@
 			productReference = 1DB29C9E2FC8151A00A9A874 /* TimeProgressUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		A1B2C3DD2FC9000000A9A001 /* TimeProgressWidget */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A1B2C3E02FC9000000A9A001 /* Build configuration list for PBXNativeTarget "TimeProgressWidget" */;
+			buildPhases = (
+				A1B2C3D92FC9000000A9A001 /* Sources */,
+				A1B2C3D72FC9000000A9A001 /* Frameworks */,
+				A1B2C3D82FC9000000A9A001 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				A1B2C3D52FC9000000A9A001 /* TimeProgressWidget */,
+			);
+			name = TimeProgressWidget;
+			packageProductDependencies = (
+			);
+			productName = TimeProgressWidget;
+			productReference = A1B2C3D42FC9000000A9A001 /* TimeProgressWidget.appex */;
+			productType = "com.apple.product-type.widgetkit-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -184,6 +256,9 @@
 						CreatedOnToolsVersion = 26.4.1;
 						TestTargetID = 1DB29C862FC8151900A9A874;
 					};
+					A1B2C3DD2FC9000000A9A001 = {
+						CreatedOnToolsVersion = 26.4.1;
+					};
 				};
 			};
 			buildConfigurationList = 1DB29C822FC8151900A9A874 /* Build configuration list for PBXProject "TimeProgress" */;
@@ -203,6 +278,7 @@
 				1DB29C862FC8151900A9A874 /* TimeProgress */,
 				1DB29C932FC8151A00A9A874 /* TimeProgressTests */,
 				1DB29C9D2FC8151A00A9A874 /* TimeProgressUITests */,
+				A1B2C3DD2FC9000000A9A001 /* TimeProgressWidget */,
 			);
 		};
 /* End PBXProject section */
@@ -223,6 +299,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		1DB29C9C2FC8151A00A9A874 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1B2C3D82FC9000000A9A001 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -253,6 +336,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A1B2C3D92FC9000000A9A001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -265,6 +355,11 @@
 			isa = PBXTargetDependency;
 			target = 1DB29C862FC8151900A9A874 /* TimeProgress */;
 			targetProxy = 1DB29C9F2FC8151A00A9A874 /* PBXContainerItemProxy */;
+		};
+		A1B2C3DB2FC9000000A9A001 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A1B2C3DD2FC9000000A9A001 /* TimeProgressWidget */;
+			targetProxy = A1B2C3DC2FC9000000A9A001 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -540,6 +635,62 @@
 			};
 			name = Release;
 		};
+		A1B2C3DE2FC9000000A9A001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = TimeProgressWidget/TimeProgressWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RUWB749A3F;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = HuangHao.TimeProgress.TimeProgressWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A1B2C3DF2FC9000000A9A001 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				APPLICATION_EXTENSION_API_ONLY = YES;
+				CODE_SIGN_ENTITLEMENTS = TimeProgressWidget/TimeProgressWidget.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RUWB749A3F;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.4;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = HuangHao.TimeProgress.TimeProgressWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -575,6 +726,15 @@
 			buildConfigurations = (
 				1DB29CAF2FC8151A00A9A874 /* Debug */,
 				1DB29CB02FC8151A00A9A874 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A1B2C3E02FC9000000A9A001 /* Build configuration list for PBXNativeTarget "TimeProgressWidget" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1B2C3DE2FC9000000A9A001 /* Debug */,
+				A1B2C3DF2FC9000000A9A001 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -70,7 +70,7 @@ struct TimeEvent: Identifiable, Codable, Equatable {
     
     var totalHours: Double {
         if workSchedule.useCustomSchedule {
-            return Double(totalWorkingDays) * workSchedule.dailyWorkHours
+            return calculateElapsedWorkHours(from: startDate, to: endDate)
         }
         return endDate.timeIntervalSince(startDate) / 3600.0
     }
@@ -80,32 +80,7 @@ struct TimeEvent: Identifiable, Codable, Equatable {
         if now <= startDate { return 0 }
         if now >= endDate { return totalHours }
         if workSchedule.useCustomSchedule {
-            let calendar = Calendar.current
-            var totalElapsed: Double = 0
-            let startDay = calendar.startOfDay(for: startDate)
-            var current = startDay
-            let today = calendar.startOfDay(for: now)
-            while current <= today {
-                let weekday = calendar.component(.weekday, from: current)
-                if workSchedule.workDays.contains(weekday) {
-                    let workStart = calendar.date(bySettingHour: workSchedule.startHour, minute: workSchedule.startMinute, second: 0, of: current)!
-                    let workEnd = calendar.date(bySettingHour: workSchedule.endHour, minute: workSchedule.endMinute, second: 0, of: current)!
-                    if current == today {
-                        if now > workStart {
-                            let effectiveStart = current == startDay ? max(startDate, workStart) : workStart
-                            let effectiveEnd = min(now, workEnd)
-                            totalElapsed += max(0, effectiveEnd.timeIntervalSince(effectiveStart) / 3600.0)
-                        }
-                    } else if current == startDay {
-                        let effectiveStart = max(startDate, workStart)
-                        totalElapsed += max(0, workEnd.timeIntervalSince(effectiveStart) / 3600.0)
-                    } else {
-                        totalElapsed += workSchedule.dailyWorkHours
-                    }
-                }
-                current = calendar.date(byAdding: .day, value: 1, to: current)!
-            }
-            return min(totalElapsed, totalHours)
+            return calculateElapsedWorkHours(from: startDate, to: now)
         }
         return now.timeIntervalSince(startDate) / 3600.0
     }
@@ -127,6 +102,40 @@ struct TimeEvent: Identifiable, Codable, Equatable {
         case .hours:
             return String(format: "%.1f小时", remainingHours)
         }
+    }
+
+    private func calculateElapsedWorkHours(from start: Date, to now: Date) -> Double {
+        let calendar = Calendar.current
+        var totalElapsed: Double = 0
+        var current = calendar.startOfDay(for: start)
+        let today = calendar.startOfDay(for: now)
+
+        while current <= today {
+            let weekday = calendar.component(.weekday, from: current)
+            if workSchedule.workDays.contains(weekday) {
+                if current == today {
+                    let workStart = calendar.date(bySettingHour: workSchedule.startHour, minute: workSchedule.startMinute, second: 0, of: current)!
+                    let workEnd = calendar.date(bySettingHour: workSchedule.endHour, minute: workSchedule.endMinute, second: 0, of: current)!
+
+                    if now > workStart {
+                        let effectiveEnd = min(now, workEnd)
+                        let hours = effectiveEnd.timeIntervalSince(workStart) / 3600.0
+                        totalElapsed += max(0, hours)
+                    }
+                } else if current == calendar.startOfDay(for: start) {
+                    let workStart = calendar.date(bySettingHour: workSchedule.startHour, minute: workSchedule.startMinute, second: 0, of: current)!
+                    let workEnd = calendar.date(bySettingHour: workSchedule.endHour, minute: workSchedule.endMinute, second: 0, of: current)!
+                    let effectiveStart = max(start, workStart)
+                    if effectiveStart < workEnd {
+                        totalElapsed += workEnd.timeIntervalSince(effectiveStart) / 3600.0
+                    }
+                } else {
+                    totalElapsed += workSchedule.dailyWorkHours
+                }
+            }
+            current = calendar.date(byAdding: .day, value: 1, to: current)!
+        }
+        return max(0, totalElapsed)
     }
 }
 

@@ -59,13 +59,16 @@ struct CircularProgressView: View {
     var body: some View {
         ZStack {
             Circle()
-                .stroke(color.opacity(0.2), lineWidth: 8)
+                .stroke(color.opacity(0.16), lineWidth: 10)
             
             Circle()
                 .trim(from: 0, to: progress)
                 .stroke(
-                    color,
-                    style: StrokeStyle(lineWidth: 8, lineCap: .round)
+                    AngularGradient(
+                        gradient: Gradient(colors: [color.opacity(0.7), color]),
+                        center: .center
+                    ),
+                    style: StrokeStyle(lineWidth: 10, lineCap: .round)
                 )
                 .rotationEffect(.degrees(-90))
         }
@@ -79,34 +82,34 @@ struct TimeProgressWidgetEntryView: View {
         if let event = entry.event {
             ZStack {
                 CircularProgressView(progress: event.progress, color: event.color)
-                    .padding(16)
+                    .padding(12)
                 
-                VStack(spacing: 4) {
-                    Image(systemName: event.iconName)
-                        .font(.title3)
-                        .foregroundColor(event.color)
-                    
+                VStack(spacing: 6) {
                     Text(event.name)
                         .font(.caption)
-                        .fontWeight(.medium)
-                        .lineLimit(1)
+                        .fontWeight(.semibold)
+                        .multilineTextAlignment(.center)
+                        .lineLimit(2)
+                        .minimumScaleFactor(0.8)
                     
                     Text(event.remainingTimeString)
-                        .font(.caption2)
-                        .foregroundColor(.secondary)
+                        .font(.system(size: 16, weight: .bold, design: .rounded))
+                        .foregroundColor(event.color)
+                        .lineLimit(1)
+                        .minimumScaleFactor(0.7)
                 }
+                .padding(.horizontal, 18)
             }
             .containerBackground(for: .widget) {
                 Color(.systemBackground)
             }
         } else {
             VStack(spacing: 8) {
-                Image(systemName: "clock")
-                    .font(.title2)
-                    .foregroundColor(.secondary)
-                
-                Text("添加事件")
+                Text("暂无事件")
                     .font(.caption)
+                    .foregroundColor(.secondary)
+                Text("请先在 App 中创建时间")
+                    .font(.caption2)
                     .foregroundColor(.secondary)
             }
             .containerBackground(for: .widget) {
