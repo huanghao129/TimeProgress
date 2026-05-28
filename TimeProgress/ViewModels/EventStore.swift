@@ -48,10 +48,8 @@ class EventStore: ObservableObject {
     private func saveEvents() {
         if let data = try? JSONEncoder().encode(events) {
             UserDefaults.standard.set(data, forKey: saveKey)
-            // Also save to shared container for widget
-            if let sharedDefaults = UserDefaults(suiteName: suiteName) {
-                sharedDefaults.set(data, forKey: saveKey)
-            }
+            UserDefaults.standard.synchronize()
+            syncSharedEvents(data)
 #if canImport(WidgetKit)
             WidgetCenter.shared.reloadAllTimelines()
 #endif
@@ -62,6 +60,12 @@ class EventStore: ObservableObject {
         if let data = UserDefaults.standard.data(forKey: saveKey),
            let decoded = try? JSONDecoder().decode([TimeEvent].self, from: data) {
             events = decoded
+            syncSharedEvents(data)
+        } else if let sharedDefaults = UserDefaults(suiteName: suiteName),
+                  let data = sharedDefaults.data(forKey: saveKey),
+                  let decoded = try? JSONDecoder().decode([TimeEvent].self, from: data) {
+            events = decoded
+            UserDefaults.standard.set(data, forKey: saveKey)
         }
     }
     
@@ -75,5 +79,11 @@ class EventStore: ObservableObject {
             return decoded
         }
         return []
+    }
+
+    private func syncSharedEvents(_ data: Data) {
+        guard let sharedDefaults = UserDefaults(suiteName: suiteName) else { return }
+        sharedDefaults.set(data, forKey: saveKey)
+        sharedDefaults.synchronize()
     }
 }
