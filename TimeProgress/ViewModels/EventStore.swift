@@ -48,7 +48,6 @@ class EventStore: ObservableObject {
     private func saveEvents() {
         if let data = try? JSONEncoder().encode(events) {
             UserDefaults.standard.set(data, forKey: saveKey)
-            UserDefaults.standard.synchronize()
             syncSharedEvents(data)
 #if canImport(WidgetKit)
             WidgetCenter.shared.reloadAllTimelines()
@@ -84,6 +83,5 @@ class EventStore: ObservableObject {
     private func syncSharedEvents(_ data: Data) {
         guard let sharedDefaults = UserDefaults(suiteName: suiteName) else { return }
         sharedDefaults.set(data, forKey: saveKey)
-        sharedDefaults.synchronize()
     }
 }
