@@ -24,7 +24,7 @@ struct EventListView: View {
                     LazyVStack(spacing: 16) {
                         ForEach(store.events) { event in
                             EventCardView(event: event)
-                                .id(refreshID)
+                                .id("\(event.id.uuidString)-\(refreshID.uuidString)")
                                 .contextMenu {
                                     Button {
                                         editingEvent = event

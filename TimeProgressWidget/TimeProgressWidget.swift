@@ -76,10 +76,20 @@ enum WidgetEventStore {
     static func loadEvents() -> [TimeEvent] {
         guard let defaults = UserDefaults(suiteName: suiteName),
               let data = defaults.data(forKey: saveKey),
-              let events = try? JSONDecoder().decode([TimeEvent].self, from: data) else {
+              let events = decodeEvents(from: data) else {
             return []
         }
         return events
+    }
+
+    private static func decodeEvents(from data: Data) -> [TimeEvent]? {
+        if let events = try? JSONDecoder().decode([TimeEvent].self, from: data) {
+            return events
+        }
+        if let singleEvent = try? JSONDecoder().decode(TimeEvent.self, from: data) {
+            return [singleEvent]
+        }
+        return nil
     }
 }
 
