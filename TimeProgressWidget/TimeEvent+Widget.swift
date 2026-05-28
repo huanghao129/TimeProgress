@@ -82,18 +82,23 @@ struct TimeEvent: Identifiable, Codable, Equatable {
         if workSchedule.useCustomSchedule {
             let calendar = Calendar.current
             var totalElapsed: Double = 0
-            var current = calendar.startOfDay(for: startDate)
+            let startDay = calendar.startOfDay(for: startDate)
+            var current = startDay
             let today = calendar.startOfDay(for: now)
             while current <= today {
                 let weekday = calendar.component(.weekday, from: current)
                 if workSchedule.workDays.contains(weekday) {
+                    let workStart = calendar.date(bySettingHour: workSchedule.startHour, minute: workSchedule.startMinute, second: 0, of: current)!
+                    let workEnd = calendar.date(bySettingHour: workSchedule.endHour, minute: workSchedule.endMinute, second: 0, of: current)!
                     if current == today {
-                        let workStart = calendar.date(bySettingHour: workSchedule.startHour, minute: workSchedule.startMinute, second: 0, of: current)!
-                        let workEnd = calendar.date(bySettingHour: workSchedule.endHour, minute: workSchedule.endMinute, second: 0, of: current)!
                         if now > workStart {
+                            let effectiveStart = current == startDay ? max(startDate, workStart) : workStart
                             let effectiveEnd = min(now, workEnd)
-                            totalElapsed += max(0, effectiveEnd.timeIntervalSince(workStart) / 3600.0)
+                            totalElapsed += max(0, effectiveEnd.timeIntervalSince(effectiveStart) / 3600.0)
                         }
+                    } else if current == startDay {
+                        let effectiveStart = max(startDate, workStart)
+                        totalElapsed += max(0, workEnd.timeIntervalSince(effectiveStart) / 3600.0)
                     } else {
                         totalElapsed += workSchedule.dailyWorkHours
                     }
