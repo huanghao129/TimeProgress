@@ -58,6 +58,7 @@ class EventStore: ObservableObject {
     }
     
     private func loadEvents() {
+        // The app group is treated as the source of truth so the widget and app always read the same payload.
         if let sharedData = sharedDefaults?.data(forKey: saveKey),
            let decoded = Self.decodeEvents(from: sharedData) {
             events = decoded

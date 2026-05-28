@@ -9,6 +9,11 @@ import SwiftUI
 import Combine
 
 struct EventListView: View {
+    private struct EventRefreshIdentity: Hashable {
+        let eventID: UUID
+        let refreshID: UUID
+    }
+
     @ObservedObject var store: EventStore
     @State private var showingAddEvent = false
     @State private var editingEvent: TimeEvent?
@@ -24,7 +29,7 @@ struct EventListView: View {
                     LazyVStack(spacing: 16) {
                         ForEach(store.events) { event in
                             EventCardView(event: event)
-                                .id("\(event.id.uuidString)-\(refreshID.uuidString)")
+                                .id(EventRefreshIdentity(eventID: event.id, refreshID: refreshID))
                                 .contextMenu {
                                     Button {
                                         editingEvent = event
