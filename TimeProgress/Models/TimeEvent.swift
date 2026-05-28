@@ -74,7 +74,7 @@ struct TimeEvent: Identifiable, Codable, Equatable {
     // Total time in hours
     var totalHours: Double {
         if workSchedule.useCustomSchedule {
-            return Double(totalWorkingDays) * workSchedule.dailyWorkHours
+            return calculateElapsedWorkHours(from: startDate, to: endDate)
         } else {
             return endDate.timeIntervalSince(startDate) / 3600.0
         }
