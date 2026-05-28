@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct EventListView: View {
     @ObservedObject var store: EventStore
@@ -46,7 +47,7 @@ struct EventListView: View {
                     .padding(.top, 8)
                 }
             }
-            .navigationTitle("时间进度")
+            .navigationTitle("Events")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button {

@@ -8,6 +8,7 @@
 import Combine
 import Foundation
 import SwiftUI
+import Combine
 
 class EventStore: ObservableObject {
     @Published var events: [TimeEvent] = []
