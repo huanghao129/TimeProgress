@@ -2,129 +2,183 @@
 //  TimeProgressWidget.swift
 //  TimeProgressWidget
 //
-//  Created by Assistant on 2026/5/28.
+//  Created by 黄浩 on 2026/5/28.
 //
 
 import WidgetKit
 import SwiftUI
+import AppIntents
 
-struct EventEntry: TimelineEntry {
+// MARK: - Timeline Entry
+
+struct TimeProgressEntry: TimelineEntry {
     let date: Date
     let event: TimeEvent?
 }
 
-struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> EventEntry {
-        EventEntry(date: Date(), event: nil)
+// MARK: - Provider
+
+struct TimeProgressProvider: AppIntentTimelineProvider {
+    func placeholder(in context: Context) -> TimeProgressEntry {
+        TimeProgressEntry(date: Date(), event: .placeholder)
     }
-    
-    func getSnapshot(in context: Context, completion: @escaping (EventEntry) -> Void) {
-        let events = loadEvents()
-        let entry = EventEntry(date: Date(), event: events.first)
-        completion(entry)
+
+    func snapshot(for configuration: SelectEventIntent, in context: Context) async -> TimeProgressEntry {
+        let events = WidgetEventStore.loadEvents()
+        return TimeProgressEntry(date: Date(), event: resolvedEvent(for: configuration, from: events))
     }
-    
-    func getTimeline(in context: Context, completion: @escaping (Timeline<EventEntry>) -> Void) {
-        let events = loadEvents()
-        let currentDate = Date()
-        
-        // Update every 15 minutes
-        var entries: [EventEntry] = []
-        for minuteOffset in stride(from: 0, to: 60, by: 15) {
-            let entryDate = Calendar.current.date(byAdding: .minute, value: minuteOffset, to: currentDate)!
-            let entry = EventEntry(date: entryDate, event: events.first)
-            entries.append(entry)
+
+    func timeline(for configuration: SelectEventIntent, in context: Context) async -> Timeline<TimeProgressEntry> {
+        let events = WidgetEventStore.loadEvents()
+        let event = resolvedEvent(for: configuration, from: events)
+        let now = Date()
+
+        let entries: [TimeProgressEntry] = (0..<24).map { hour in
+            let entryDate = Calendar.current.date(byAdding: .hour, value: hour, to: now)!
+            return TimeProgressEntry(date: entryDate, event: event)
         }
-        
-        let timeline = Timeline(entries: entries, policy: .atEnd)
-        completion(timeline)
+
+        return Timeline(entries: entries, policy: .atEnd)
     }
-    
-    private func loadEvents() -> [TimeEvent] {
-        let suiteName = "group.com.huanghao.TimeProgress"
-        let saveKey = "TimeProgressEvents"
-        if let sharedDefaults = UserDefaults(suiteName: suiteName),
-           let data = sharedDefaults.data(forKey: saveKey),
-           let decoded = try? JSONDecoder().decode([TimeEvent].self, from: data) {
-            return decoded
+
+    // MARK: - Helpers
+
+    private func resolvedEvent(for configuration: SelectEventIntent, from events: [TimeEvent]) -> TimeEvent? {
+        if let selectedId = configuration.event?.id,
+           let uuid = UUID(uuidString: selectedId),
+           let selectedEvent = events.first(where: { $0.id == uuid }) {
+            return selectedEvent
         }
-        return []
+        return mostRelevantEvent(from: events)
+    }
+
+    /// Returns the most relevant event: active > upcoming > most-recently-completed.
+    private func mostRelevantEvent(from events: [TimeEvent]) -> TimeEvent? {
+        let now = Date()
+        if let active = events
+            .filter({ $0.startDate <= now && $0.endDate > now })
+            .min(by: { $0.endDate < $1.endDate }) {
+            return active
+        }
+        if let upcoming = events
+            .filter({ $0.startDate > now })
+            .min(by: { $0.startDate < $1.startDate }) {
+            return upcoming
+        }
+        return events.max(by: { $0.endDate < $1.endDate })
     }
 }
 
-struct CircularProgressView: View {
-    let progress: Double
-    let color: Color
-    
-    var body: some View {
-        ZStack {
-            Circle()
-                .stroke(color.opacity(0.2), lineWidth: 8)
-            
-            Circle()
-                .trim(from: 0, to: progress)
-                .stroke(
-                    color,
-                    style: StrokeStyle(lineWidth: 8, lineCap: .round)
-                )
-                .rotationEffect(.degrees(-90))
+enum WidgetEventStore {
+    private static let suiteName = "group.com.huanghao.TimeProgress"
+    private static let saveKey = "TimeProgressEvents"
+
+    static func loadEvents() -> [TimeEvent] {
+        guard let defaults = UserDefaults(suiteName: suiteName),
+              let data = defaults.data(forKey: saveKey),
+              let events = decodeEvents(from: data) else {
+            return []
         }
+        return events
+    }
+
+    private static func decodeEvents(from data: Data) -> [TimeEvent]? {
+        if let events = try? JSONDecoder().decode([TimeEvent].self, from: data) {
+            return events
+        }
+        if let singleEvent = try? JSONDecoder().decode(TimeEvent.self, from: data) {
+            return [singleEvent]
+        }
+        return nil
     }
 }
+
+// MARK: - Placeholder Event
+
+private extension TimeEvent {
+    static let placeholder = TimeEvent(
+        id: UUID(),
+        name: "示例事件",
+        iconName: "star.fill",
+        colorHex: "#007AFF",
+        startDate: Date().addingTimeInterval(-86400),
+        endDate: Date().addingTimeInterval(86400 * 6),
+        workSchedule: .defaultSchedule,
+        displayMode: .days
+    )
+}
+
+// MARK: - Widget View
 
 struct TimeProgressWidgetEntryView: View {
-    var entry: Provider.Entry
-    
+    var entry: TimeProgressEntry
+
     var body: some View {
         if let event = entry.event {
             ZStack {
-                CircularProgressView(progress: event.progress, color: event.color)
-                    .padding(16)
-                
+                // Background track
+                Circle()
+                    .stroke(event.color.opacity(0.2), lineWidth: 10)
+                    .padding(6)
+
+                // Progress arc
+                Circle()
+                    .trim(from: 0, to: CGFloat(event.progress))
+                    .stroke(
+                        event.color,
+                        style: StrokeStyle(lineWidth: 10, lineCap: .round)
+                    )
+                    .rotationEffect(.degrees(-90))
+                    .padding(6)
+
+                // Center labels
                 VStack(spacing: 4) {
-                    Image(systemName: event.iconName)
-                        .font(.title3)
-                        .foregroundColor(event.color)
-                    
                     Text(event.name)
-                        .font(.caption)
-                        .fontWeight(.medium)
-                        .lineLimit(1)
-                    
+                        .font(.system(size: 13, weight: .semibold))
+                        .lineLimit(2)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.primary)
+
                     Text(event.remainingTimeString)
-                        .font(.caption2)
-                        .foregroundColor(.secondary)
+                        .font(.system(size: 12, weight: .regular))
+                        .foregroundColor(event.color)
                 }
-            }
-            .containerBackground(for: .widget) {
-                Color(.systemBackground)
+                .padding(28)
             }
         } else {
-            VStack(spacing: 8) {
+            VStack(spacing: 6) {
                 Image(systemName: "clock")
                     .font(.title2)
                     .foregroundColor(.secondary)
-                
-                Text("添加事件")
+                Text("暂无事件")
                     .font(.caption)
                     .foregroundColor(.secondary)
-            }
-            .containerBackground(for: .widget) {
-                Color(.systemBackground)
             }
         }
     }
 }
 
+// MARK: - Widget Configuration
+
 struct TimeProgressWidget: Widget {
     let kind: String = "TimeProgressWidget"
-    
+
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: Provider()) { entry in
+        AppIntentConfiguration(kind: kind, intent: SelectEventIntent.self, provider: TimeProgressProvider()) { entry in
             TimeProgressWidgetEntryView(entry: entry)
+                .containerBackground(.fill.tertiary, for: .widget)
         }
         .configurationDisplayName("时间进度")
-        .description("显示事件时间进度")
+        .description("显示事件的剩余时间和进度。")
         .supportedFamilies([.systemSmall])
     }
+}
+
+// MARK: - Previews
+
+#Preview(as: .systemSmall) {
+    TimeProgressWidget()
+} timeline: {
+    TimeProgressEntry(date: .now, event: .placeholder)
+    TimeProgressEntry(date: .now, event: nil)
 }

@@ -8,13 +8,18 @@
 import Combine
 import Foundation
 import SwiftUI
-import Combine
+#if canImport(WidgetKit)
+import WidgetKit
+#endif
 
 class EventStore: ObservableObject {
     @Published var events: [TimeEvent] = []
     
     private let saveKey = "TimeProgressEvents"
     private let suiteName = "group.com.huanghao.TimeProgress"
+    private var sharedDefaults: UserDefaults? {
+        UserDefaults(suiteName: suiteName)
+    }
     
     init() {
         loadEvents()
@@ -44,18 +49,27 @@ class EventStore: ObservableObject {
     
     private func saveEvents() {
         if let data = try? JSONEncoder().encode(events) {
+            sharedDefaults?.set(data, forKey: saveKey)
             UserDefaults.standard.set(data, forKey: saveKey)
-            // Also save to shared container for widget
-            if let sharedDefaults = UserDefaults(suiteName: suiteName) {
-                sharedDefaults.set(data, forKey: saveKey)
-            }
+#if canImport(WidgetKit)
+            WidgetCenter.shared.reloadAllTimelines()
+#endif
         }
     }
     
     private func loadEvents() {
-        if let data = UserDefaults.standard.data(forKey: saveKey),
-           let decoded = try? JSONDecoder().decode([TimeEvent].self, from: data) {
+        // The app group is treated as the source of truth so the widget and app always read the same payload.
+        if let sharedData = sharedDefaults?.data(forKey: saveKey),
+           let decoded = Self.decodeEvents(from: sharedData) {
             events = decoded
+            UserDefaults.standard.set(sharedData, forKey: saveKey)
+            return
+        }
+
+        if let localData = UserDefaults.standard.data(forKey: saveKey),
+           let decoded = Self.decodeEvents(from: localData) {
+            events = decoded
+            sharedDefaults?.set(localData, forKey: saveKey)
         }
     }
     
@@ -65,9 +79,19 @@ class EventStore: ObservableObject {
         let saveKey = "TimeProgressEvents"
         if let sharedDefaults = UserDefaults(suiteName: suiteName),
            let data = sharedDefaults.data(forKey: saveKey),
-           let decoded = try? JSONDecoder().decode([TimeEvent].self, from: data) {
+           let decoded = decodeEvents(from: data) {
             return decoded
         }
         return []
+    }
+
+    private static func decodeEvents(from data: Data) -> [TimeEvent]? {
+        if let events = try? JSONDecoder().decode([TimeEvent].self, from: data) {
+            return events
+        }
+        if let singleEvent = try? JSONDecoder().decode(TimeEvent.self, from: data) {
+            return [singleEvent]
+        }
+        return nil
     }
 }

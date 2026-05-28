@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		1DB29D032FC8294B00A9A874 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DB29D022FC8294A00A9A874 /* WidgetKit.framework */; };
+		1DB29D052FC8294B00A9A874 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DB29D042FC8294B00A9A874 /* SwiftUI.framework */; };
+		1DB29D162FC8294C00A9A874 /* TimeProgressWidgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 1DB29D002FC8294A00A9A874 /* TimeProgressWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		1DB29C952FC8151A00A9A874 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -21,13 +27,47 @@
 			remoteGlobalIDString = 1DB29C862FC8151900A9A874;
 			remoteInfo = TimeProgress;
 		};
+		1DB29D142FC8294C00A9A874 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 1DB29C7F2FC8151900A9A874 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 1DB29CFF2FC8294A00A9A874;
+			remoteInfo = TimeProgressWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		A1B2C3DA2FC9000000A9A001 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				1DB29D162FC8294C00A9A874 /* TimeProgressWidgetExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		1DB29C872FC8151900A9A874 /* TimeProgress.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimeProgress.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DB29C942FC8151A00A9A874 /* TimeProgressTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimeProgressTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DB29C9E2FC8151A00A9A874 /* TimeProgressUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TimeProgressUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1DB29D002FC8294A00A9A874 /* TimeProgressWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = TimeProgressWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		1DB29D022FC8294A00A9A874 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		1DB29D042FC8294B00A9A874 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		1DB29D172FC8294C00A9A874 /* Exceptions for "TimeProgressWidget" folder in "TimeProgressWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 1DB29CFF2FC8294A00A9A874 /* TimeProgressWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		1DB29C892FC8151900A9A874 /* TimeProgress */ = {
@@ -43,6 +83,14 @@
 		1DB29CA12FC8151A00A9A874 /* TimeProgressUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = TimeProgressUITests;
+			sourceTree = "<group>";
+		};
+		1DB29D062FC8294B00A9A874 /* TimeProgressWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				1DB29D172FC8294C00A9A874 /* Exceptions for "TimeProgressWidget" folder in "TimeProgressWidgetExtension" target */,
+			);
+			path = TimeProgressWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -69,6 +117,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1DB29CFD2FC8294A00A9A874 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1DB29D052FC8294B00A9A874 /* SwiftUI.framework in Frameworks */,
+				1DB29D032FC8294B00A9A874 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -78,6 +135,8 @@
 				1DB29C892FC8151900A9A874 /* TimeProgress */,
 				1DB29C972FC8151A00A9A874 /* TimeProgressTests */,
 				1DB29CA12FC8151A00A9A874 /* TimeProgressUITests */,
+				1DB29D062FC8294B00A9A874 /* TimeProgressWidget */,
+				1DB29D012FC8294A00A9A874 /* Frameworks */,
 				1DB29C882FC8151900A9A874 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -88,8 +147,18 @@
 				1DB29C872FC8151900A9A874 /* TimeProgress.app */,
 				1DB29C942FC8151A00A9A874 /* TimeProgressTests.xctest */,
 				1DB29C9E2FC8151A00A9A874 /* TimeProgressUITests.xctest */,
+				1DB29D002FC8294A00A9A874 /* TimeProgressWidgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		1DB29D012FC8294A00A9A874 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1DB29D022FC8294A00A9A874 /* WidgetKit.framework */,
+				1DB29D042FC8294B00A9A874 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -102,10 +171,12 @@
 				1DB29C832FC8151900A9A874 /* Sources */,
 				1DB29C842FC8151900A9A874 /* Frameworks */,
 				1DB29C852FC8151900A9A874 /* Resources */,
+				A1B2C3DA2FC9000000A9A001 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				1DB29D152FC8294C00A9A874 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				1DB29C892FC8151900A9A874 /* TimeProgress */,
@@ -163,6 +234,28 @@
 			productReference = 1DB29C9E2FC8151A00A9A874 /* TimeProgressUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		1DB29CFF2FC8294A00A9A874 /* TimeProgressWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DB29D182FC8294C00A9A874 /* Build configuration list for PBXNativeTarget "TimeProgressWidgetExtension" */;
+			buildPhases = (
+				1DB29CFC2FC8294A00A9A874 /* Sources */,
+				1DB29CFD2FC8294A00A9A874 /* Frameworks */,
+				1DB29CFE2FC8294A00A9A874 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				1DB29D062FC8294B00A9A874 /* TimeProgressWidget */,
+			);
+			name = TimeProgressWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = TimeProgressWidgetExtension;
+			productReference = 1DB29D002FC8294A00A9A874 /* TimeProgressWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -170,6 +263,9 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
+				KnownAssetTags = (
+					New,
+				);
 				LastSwiftUpdateCheck = 2640;
 				LastUpgradeCheck = 2640;
 				TargetAttributes = {
@@ -183,6 +279,9 @@
 					1DB29C9D2FC8151A00A9A874 = {
 						CreatedOnToolsVersion = 26.4.1;
 						TestTargetID = 1DB29C862FC8151900A9A874;
+					};
+					1DB29CFF2FC8294A00A9A874 = {
+						CreatedOnToolsVersion = 26.4.1;
 					};
 				};
 			};
@@ -203,6 +302,7 @@
 				1DB29C862FC8151900A9A874 /* TimeProgress */,
 				1DB29C932FC8151A00A9A874 /* TimeProgressTests */,
 				1DB29C9D2FC8151A00A9A874 /* TimeProgressUITests */,
+				1DB29CFF2FC8294A00A9A874 /* TimeProgressWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -223,6 +323,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		1DB29C9C2FC8151A00A9A874 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		1DB29CFE2FC8294A00A9A874 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -253,6 +360,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		1DB29CFC2FC8294A00A9A874 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -265,6 +379,11 @@
 			isa = PBXTargetDependency;
 			target = 1DB29C862FC8151900A9A874 /* TimeProgress */;
 			targetProxy = 1DB29C9F2FC8151A00A9A874 /* PBXContainerItemProxy */;
+		};
+		1DB29D152FC8294C00A9A874 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 1DB29CFF2FC8294A00A9A874 /* TimeProgressWidgetExtension */;
+			targetProxy = 1DB29D142FC8294C00A9A874 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -540,6 +659,66 @@
 			};
 			name = Release;
 		};
+		1DB29D192FC8294C00A9A874 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RUWB749A3F;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TimeProgressWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TimeProgressWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = HuangHao.TimeProgress.TimeProgressWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1DB29D1A2FC8294C00A9A874 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = RUWB749A3F;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TimeProgressWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = TimeProgressWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = HuangHao.TimeProgress.TimeProgressWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -575,6 +754,15 @@
 			buildConfigurations = (
 				1DB29CAF2FC8151A00A9A874 /* Debug */,
 				1DB29CB02FC8151A00A9A874 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DB29D182FC8294C00A9A874 /* Build configuration list for PBXNativeTarget "TimeProgressWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DB29D192FC8294C00A9A874 /* Debug */,
+				1DB29D1A2FC8294C00A9A874 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

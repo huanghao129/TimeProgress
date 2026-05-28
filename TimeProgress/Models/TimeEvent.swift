@@ -198,7 +198,7 @@ struct TimeEvent: Identifiable, Codable, Equatable {
             }
             current = calendar.date(byAdding: .day, value: 1, to: current)!
         }
-        return min(totalElapsed, totalHours)
+        return max(0, totalElapsed)
     }
 }
 
